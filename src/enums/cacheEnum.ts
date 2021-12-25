@@ -9,6 +9,9 @@ export const USER_INFO_KEY = 'USER__INFO__';
 // role info key
 export const ROLES_KEY = 'ROLES__KEY__';
 
+// code info key
+export const CODES_KEY = 'CODES__KEY__';
+
 // project config key
 export const PROJ_CFG_KEY = 'PROJ__CFG__KEY__';
 

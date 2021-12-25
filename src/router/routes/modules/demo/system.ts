@@ -15,6 +15,27 @@ const system: AppRouteModule = {
   },
   children: [
     {
+      path: 'user',
+      name: 'SystemUser',
+      meta: {
+        title: '用户管理',
+        ignoreKeepAlive: false,
+      },
+      component: () => import('/@/views/system/user/index.vue'),
+    },
+    {
+      path: 'user/:id',
+      name: 'SystemUserDetail',
+      meta: {
+        hideMenu: true,
+        title: '用户详情',
+        ignoreKeepAlive: true,
+        showMenu: false,
+        currentActiveMenu: '/system/user',
+      },
+      component: () => import('/@/views/system/user/UserDetail.vue'),
+    },
+    {
       path: 'account',
       name: 'AccountManagement',
       meta: {

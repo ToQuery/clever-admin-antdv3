@@ -45,6 +45,7 @@ module.exports = defineConfig({
         varsIgnorePattern: '^_',
       },
     ],
+    '@typescript-eslint/no-namespace': 'off',
     'no-unused-vars': [
       'error',
       {

@@ -19,14 +19,14 @@ import { ERROR_LOG_ROUTE, PAGE_NOT_FOUND_ROUTE } from '/@/router/routes/basic';
 import { filter } from '/@/utils/helper/treeHelper';
 
 import { getMenuList } from '/@/api/sys/menu';
-import { getPermCode } from '/@/api/sys/user';
 
 import { useMessage } from '/@/hooks/web/useMessage';
 import { PageEnum } from '/@/enums/pageEnum';
+import { getUserInfo } from '/@/api/system/system';
 
 interface PermissionState {
   // Permission code list
-  permCodeList: string[] | number[];
+  codeList: string[];
   // Whether the route has been dynamically added
   isDynamicAddedRoute: boolean;
   // To trigger a menu update
@@ -38,7 +38,7 @@ interface PermissionState {
 export const usePermissionStore = defineStore({
   id: 'app-permission',
   state: (): PermissionState => ({
-    permCodeList: [],
+    codeList: [],
     // Whether the route has been dynamically added
     isDynamicAddedRoute: false,
     // To trigger a menu update
@@ -49,8 +49,8 @@ export const usePermissionStore = defineStore({
     frontMenuList: [],
   }),
   getters: {
-    getPermCodeList(): string[] | number[] {
-      return this.permCodeList;
+    getCodeList(): string[] {
+      return this.codeList;
     },
     getBackMenuList(): Menu[] {
       return this.backMenuList;
@@ -66,8 +66,8 @@ export const usePermissionStore = defineStore({
     },
   },
   actions: {
-    setPermCodeList(codeList: string[]) {
-      this.permCodeList = codeList;
+    setCodeList(codeList: string[]) {
+      this.codeList = codeList;
     },
 
     setBackMenuList(list: Menu[]) {
@@ -88,13 +88,13 @@ export const usePermissionStore = defineStore({
     },
     resetState(): void {
       this.isDynamicAddedRoute = false;
-      this.permCodeList = [];
+      this.codeList = [];
       this.backMenuList = [];
       this.lastBuildMenuTime = 0;
     },
     async changePermissionCode() {
-      const codeList = await getPermCode();
-      this.setPermCodeList(codeList);
+      const userInfo = await getUserInfo();
+      this.setCodeList(userInfo.content.codes);
     },
     async buildRoutesAction(): Promise<AppRouteRecordRaw[]> {
       const { t } = useI18n();
@@ -123,7 +123,8 @@ export const usePermissionStore = defineStore({
        * */
       const patchHomeAffix = (routes: AppRouteRecordRaw[]) => {
         if (!routes || routes.length === 0) return;
-        let homePath: string = userStore.getUserInfo.homePath || PageEnum.BASE_HOME;
+        // let homePath: string = userStore.getUserInfo.homePath || PageEnum.BASE_HOME;
+        let homePath: string = PageEnum.BASE_HOME;
         function patcher(routes: AppRouteRecordRaw[], parentPath = '') {
           if (parentPath) parentPath = parentPath + '/';
           routes.forEach((route: AppRouteRecordRaw) => {
