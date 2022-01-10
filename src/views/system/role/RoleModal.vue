@@ -8,8 +8,7 @@
   import { BasicModal, useModalInner } from '/@/components/Modal';
   import { BasicForm, useForm } from '/@/components/Form/index';
   import { systemRoleFormSchema } from './role.data';
-
-  import { systemMenuPage } from '/@/api/system/menu';
+  import { systemRoleAdd, systemRoleDetail, systemRoleUpdate } from '/@/api/system/role';
 
   export default defineComponent({
     name: 'SystemMenuModal',
@@ -18,7 +17,7 @@
     setup(_, { emit }) {
       const isUpdate = ref(true);
 
-      const [registerForm, { resetFields, setFieldsValue, updateSchema, validate }] = useForm({
+      const [registerForm, { resetFields, setFieldsValue, validate }] = useForm({
         labelWidth: 100,
         schemas: systemRoleFormSchema,
         showActionButtonGroup: false,
@@ -33,15 +32,14 @@
         isUpdate.value = !!data?.isUpdate;
 
         if (unref(isUpdate)) {
-          await setFieldsValue({
-            ...data.record,
-          });
+          systemRoleDetail(data.record.id)
+            .then((res) => {
+              setFieldsValue(res.content);
+            })
+            .finally(() => {
+              setModalProps({ confirmLoading: false });
+            });
         }
-        const { content } = await systemMenuPage();
-        updateSchema({
-          field: 'parentMenu',
-          componentProps: { treeData: content },
-        });
       });
 
       const getTitle = computed(() => (!unref(isUpdate) ? '新增角色' : '编辑角色'));
@@ -50,10 +48,20 @@
         try {
           const values = await validate();
           setModalProps({ confirmLoading: true });
-          // TODO custom api
+          // x
           console.log(values);
-          closeModal();
-          emit('success');
+          (unref(isUpdate) ? systemRoleUpdate(values) : systemRoleAdd(values))
+            .then(async (res) => {
+              console.info(res);
+              closeModal();
+              emit('success', {
+                isUpdate: unref(isUpdate),
+                values: { ...values },
+              });
+            })
+            .catch((err) => {
+              console.error(err);
+            });
         } finally {
           setModalProps({ confirmLoading: false });
         }

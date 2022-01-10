@@ -1,7 +1,8 @@
 import { BasicColumn, FormSchema } from '/@/components/Table';
-import { RoleListItem } from "/@/api/system/model/roleModel";
-import { h } from "vue";
-import { Tag } from "ant-design-vue";
+import { RoleListItem } from '/@/api/system/model/roleModel';
+import { h } from 'vue';
+import { Tag } from 'ant-design-vue';
+import { systemMenuTree } from '/@/api/system/menu';
 
 export const columns: BasicColumn[] = [
   {
@@ -86,6 +87,24 @@ export const systemRoleFormSchema: FormSchema[] = [
         { label: '启用', value: '1' },
         { label: '禁用', value: '0' },
       ],
+    },
+  },
+  {
+    field: 'menuIds',
+    label: '菜单',
+    required: true,
+    component: 'ApiTree',
+    componentProps: {
+      api: () => systemMenuTree(),
+      checkable: true, // 显示多选
+      showLine: true, // 显示连接线
+      resultField: 'content',
+      fieldNames: {
+        title: 'menuName',
+        key: 'id',
+        children: 'children',
+      },
+      getPopupContainer: () => document.body,
     },
   },
 ];
