@@ -1,5 +1,5 @@
 import { defHttp } from '/@/utils/http/axios';
-import { LoginRequest, LoginResponse, UserInfo } from './model/userModel';
+import { LoginRequest, LoginResponse, UserInfo } from './model/appModel';
 
 import { ErrorMessageMode } from '/#/axios';
 import { ResponseResult } from '/@/api/model/baseModel';

@@ -22,7 +22,7 @@ import { getMenuList } from '/@/api/sys/menu';
 
 import { useMessage } from '/@/hooks/web/useMessage';
 import { PageEnum } from '/@/enums/pageEnum';
-import { getUserInfo } from '/@/api/system/system';
+import { getUserInfo } from '/@/api/app/app';
 
 interface PermissionState {
   // Permission code list

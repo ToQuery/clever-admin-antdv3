@@ -1,7 +1,7 @@
 import { BasicColumn } from '/@/components/Table';
 import { FormSchema } from '/@/components/Table';
 
-export const columns: BasicColumn[] = [
+export const systemColumns: BasicColumn[] = [
   {
     title: '用户名',
     dataIndex: 'username',
@@ -28,7 +28,7 @@ export const columns: BasicColumn[] = [
   },
 ];
 
-export const searchFormSchema: FormSchema[] = [
+export const systemUserSearchFormSchema: FormSchema[] = [
   {
     field: 'username',
     label: '用户名',

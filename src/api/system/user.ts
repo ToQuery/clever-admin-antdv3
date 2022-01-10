@@ -10,7 +10,7 @@ enum Api {
 }
 
 //
-export const systemUser = (params?: RequestParam & UserListItem) =>
+export const systemUserPage = (params?: RequestParam & UserListItem) =>
   defHttp.get<ResponseResult<UserListItem[]>>({
     url: Api.SystemUser,
     params,

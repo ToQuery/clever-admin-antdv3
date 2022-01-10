@@ -5,10 +5,7 @@
 </template>
 <script lang="ts">
   import { computed, defineComponent, ref, unref } from 'vue';
-  import {
-    BasicModal,
-    useModalInner,
-  } from '/@/components/Modal';
+  import { BasicModal, useModalInner } from '/@/components/Modal';
   import { BasicForm, useForm } from '/@/components/Form/index';
   import { systemUserFormSchema } from './user.data';
   import { systemUserAdd, systemUserDetail, systemUserUpdate } from '/@/api/system/user';
@@ -52,13 +49,11 @@
             ifShow: !unref(isUpdate),
           },
         ]);
-        debugger;
       });
 
       const getTitle = computed(() => (!unref(isUpdate) ? '新增账号' : '编辑账号'));
 
       async function handleSubmit() {
-        debugger;
         try {
           const values = await validate();
           setModalProps({ confirmLoading: true });

@@ -8,11 +8,6 @@
         <TableAction
           :actions="[
             {
-              icon: 'clarity:info-standard-line',
-              tooltip: '查看用户详情',
-              onClick: handleView.bind(null, record),
-            },
-            {
               icon: 'clarity:note-edit-line',
               tooltip: '编辑用户资料',
               onClick: handleEdit.bind(null, record),
@@ -30,37 +25,35 @@
         />
       </template>
     </BasicTable>
-    <AccountModal @register="registerModal" @success="handleSuccess" />
+    <UserModal @register="registerModal" @success="handleSuccess" />
   </PageWrapper>
 </template>
 <script lang="ts">
   import { defineComponent, reactive } from 'vue';
 
   import { BasicTable, useTable, TableAction } from '/@/components/Table';
-  import { systemUser, systemUserDelete } from '/@/api/system/user';
+  import { systemUserPage, systemUserDelete } from '/@/api/system/user';
   import { PageWrapper } from '/@/components/Page';
 
   import { useModal } from '/@/components/Modal';
-  import AccountModal from './UserModal.vue';
+  import UserModal from './UserModal.vue';
 
-  import { columns, searchFormSchema } from './user.data';
-  import { useGo } from '/@/hooks/web/usePage';
+  import { systemColumns, systemUserSearchFormSchema } from './user.data';
 
   export default defineComponent({
     name: 'SystemUser',
-    components: { BasicTable, PageWrapper, AccountModal, TableAction },
+    components: { BasicTable, PageWrapper, UserModal, TableAction },
     setup() {
-      const go = useGo();
       const [registerModal, { openModal }] = useModal();
       const searchInfo = reactive<Recordable>({});
       const [registerTable, { reload, updateTableDataRecord }] = useTable({
         title: '账号列表',
-        api: systemUser,
+        api: systemUserPage,
         rowKey: 'id',
-        columns,
+        columns: systemColumns,
         formConfig: {
           labelWidth: 120,
-          schemas: searchFormSchema,
+          schemas: systemUserSearchFormSchema,
           autoSubmitOnEnter: true,
         },
         fetchSetting: {
@@ -133,10 +126,6 @@
         }
       }
 
-      function handleView(record: Recordable) {
-        go('/system/user/' + record.id);
-      }
-
       return {
         registerTable,
         registerModal,
@@ -144,7 +133,6 @@
         handleEdit,
         handleDelete,
         handleSuccess,
-        handleView,
         searchInfo,
       };
     },

@@ -5,7 +5,7 @@ import { RoleEnum } from '/@/enums/roleEnum';
 import { PageEnum } from '/@/enums/pageEnum';
 import { CODES_KEY, ROLES_KEY, TOKEN_KEY, USER_INFO_KEY } from '/@/enums/cacheEnum';
 import { getAuthCache, setAuthCache } from '/@/utils/auth';
-import { logout, getUserInfo, login } from '/@/api/system/system';
+import { logout, getUserInfo, login } from '/@/api/app/app';
 import { useI18n } from '/@/hooks/web/useI18n';
 import { useMessage } from '/@/hooks/web/useMessage';
 import { router } from '/@/router';
@@ -14,7 +14,7 @@ import { RouteRecordRaw } from 'vue-router';
 import { PAGE_NOT_FOUND_ROUTE } from '/@/router/routes/basic';
 import { isArray } from '/@/utils/is';
 import { h } from 'vue';
-import { LoginRequest, UserInfo } from '/@/api/system/model/systemModel';
+import { LoginRequest, UserInfo } from '/@/api/app/model/appModel';
 
 interface UserState {
   userInfo: Nullable<UserInfo>;

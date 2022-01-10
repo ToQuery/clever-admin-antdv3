@@ -1,4 +1,4 @@
-export type MenuListItem = {
+export type DeptListItem = {
   id?: string;
   menuName?: string;
   menuCode?: string;
@@ -6,5 +6,5 @@ export type MenuListItem = {
   menuLevel?: number;
   sortNum?: number;
   parentId?: string;
-  children?: MenuListItem[];
+  children?: DeptListItem[];
 };
