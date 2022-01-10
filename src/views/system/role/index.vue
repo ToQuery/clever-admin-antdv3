@@ -30,12 +30,13 @@
   import { defineComponent, nextTick } from 'vue';
 
   import { BasicTable, useTable, TableAction } from '/@/components/Table';
-  import { systemRolePage } from '/@/api/system/role';
+  import { systemRoleDelete, systemRolePage } from '/@/api/system/role';
 
   import RoleModal from './RoleModal.vue';
 
   import { columns, searchFormSchema } from './role.data';
   import { useModal } from '/@/components/Modal';
+  import { message } from 'ant-design-vue';
 
   export default defineComponent({
     name: 'SystemRole',
@@ -86,7 +87,15 @@
       }
 
       function handleDelete(record: Recordable) {
-        console.log(record);
+        systemRoleDelete([record.id])
+          .then(() => {
+            message.success('删除成功！');
+            reload();
+          })
+          .catch(() => {
+            // 删除失败
+            message.error('删除失败！');
+          });
       }
 
       function handleSuccess() {

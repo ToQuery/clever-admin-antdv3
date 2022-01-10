@@ -22,7 +22,9 @@
         labelWidth: 100,
         schemas: systemRoleFormSchema,
         showActionButtonGroup: false,
-        baseColProps: { span: 23 },
+        actionColOptions: {
+          span: 23,
+        },
       });
 
       const [registerModal, { setModalProps, closeModal }] = useModalInner(async (data) => {
@@ -35,14 +37,14 @@
             ...data.record,
           });
         }
-        const treeData = await systemMenuPage();
+        const { content } = await systemMenuPage();
         updateSchema({
           field: 'parentMenu',
-          componentProps: { treeData },
+          componentProps: { treeData: content },
         });
       });
 
-      const getTitle = computed(() => (!unref(isUpdate) ? '新增菜单' : '编辑菜单'));
+      const getTitle = computed(() => (!unref(isUpdate) ? '新增角色' : '编辑角色'));
 
       async function handleSubmit() {
         try {

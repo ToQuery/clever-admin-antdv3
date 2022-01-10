@@ -9,7 +9,8 @@
   import { BasicForm, useForm } from '/@/components/Form/index';
   import { systemDeptFormSchema } from './dept.data';
 
-  import { systemMenuPage } from '/@/api/system/menu';
+  import { systemDeptDetail, systemDeptTree } from '/@/api/system/dept';
+  import { systemUserAdd, systemUserUpdate } from '/@/api/system/user';
 
   export default defineComponent({
     name: 'SystemDeptModal',
@@ -22,7 +23,9 @@
         labelWidth: 100,
         schemas: systemDeptFormSchema,
         showActionButtonGroup: false,
-        baseColProps: { lg: 12, md: 24 },
+        actionColOptions: {
+          span: 23,
+        },
       });
 
       const [registerModal, { setModalProps, closeModal }] = useModalInner(async (data) => {
@@ -31,13 +34,18 @@
         isUpdate.value = !!data?.isUpdate;
 
         if (unref(isUpdate)) {
-          await setFieldsValue({
-            ...data.record,
-          });
+          systemDeptDetail(data.record.id)
+            .then((res) => {
+              setFieldsValue(res.content);
+            })
+            .finally(() => {
+              setModalProps({ confirmLoading: false });
+            });
         }
-        const treeData = await systemMenuPage();
+
+        const treeData = await systemDeptTree();
         updateSchema({
-          field: 'parentMenu',
+          field: 'parentId',
           componentProps: { treeData },
         });
       });
@@ -50,8 +58,18 @@
           setModalProps({ confirmLoading: true });
           // TODO custom api
           console.log(values);
-          closeModal();
-          emit('success');
+          (unref(isUpdate) ? systemUserUpdate(values) : systemUserAdd(values))
+            .then(async (res) => {
+              console.info(res);
+              closeModal();
+              emit('success', {
+                isUpdate: unref(isUpdate),
+                values: { ...values },
+              });
+            })
+            .catch((err) => {
+              console.error(err);
+            });
         } finally {
           setModalProps({ confirmLoading: false });
         }

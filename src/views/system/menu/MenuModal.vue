@@ -9,7 +9,7 @@
   import { BasicForm, useForm } from '/@/components/Form/index';
   import { systemMenuFormSchema } from './menu.data';
 
-  import { systemMenuPage } from '/@/api/system/menu';
+  import { systemMenuAdd, systemMenuDetail, systemMenuUpdate } from '/@/api/system/menu';
 
   export default defineComponent({
     name: 'SystemMenuModal',
@@ -22,7 +22,9 @@
         labelWidth: 100,
         schemas: systemMenuFormSchema,
         showActionButtonGroup: false,
-        baseColProps: { lg: 12, md: 24 },
+        actionColOptions: {
+          span: 23,
+        },
       });
 
       const [registerModal, { setModalProps, closeModal }] = useModalInner(async (data) => {
@@ -31,15 +33,20 @@
         isUpdate.value = !!data?.isUpdate;
 
         if (unref(isUpdate)) {
-          await setFieldsValue({
-            ...data.record,
-          });
+          systemMenuDetail(data.record.id)
+            .then((res) => {
+              setFieldsValue(res.content);
+            })
+            .finally(() => {
+              setModalProps({ confirmLoading: false });
+            });
         }
-        const treeData = await systemMenuPage();
-        updateSchema({
-          field: 'parentMenu',
-          componentProps: { treeData },
-        });
+
+        // const { content } = await systemMenuTree();
+        // updateSchema({
+        //   field: 'parentId',
+        //   componentProps: { treeData: content },
+        // });
       });
 
       const getTitle = computed(() => (!unref(isUpdate) ? '新增菜单' : '编辑菜单'));
@@ -48,10 +55,20 @@
         try {
           const values = await validate();
           setModalProps({ confirmLoading: true });
-          // TODO custom api
+          // x
           console.log(values);
-          closeModal();
-          emit('success');
+          (unref(isUpdate) ? systemMenuUpdate(values) : systemMenuAdd(values))
+            .then(async (res) => {
+              console.info(res);
+              closeModal();
+              emit('success', {
+                isUpdate: unref(isUpdate),
+                values: { ...values },
+              });
+            })
+            .catch((err) => {
+              console.error(err);
+            });
         } finally {
           setModalProps({ confirmLoading: false });
         }

@@ -30,12 +30,13 @@
   import { defineComponent, nextTick } from 'vue';
 
   import { BasicTable, useTable, TableAction } from '/@/components/Table';
-  import { systemDeptTree } from "/@/api/system/dept";
+  import { systemDeptDelete, systemDeptTree } from "/@/api/system/dept";
 
   import DeptModal from './DeptModal.vue';
 
   import { systemDeptColumns, systemDeptSearchFormSchema } from './dept.data';
   import { useModal } from '/@/components/Modal';
+  import { message } from "ant-design-vue";
 
   export default defineComponent({
     name: 'SystemDept',
@@ -91,7 +92,15 @@
       }
 
       function handleDelete(record: Recordable) {
-        console.log(record);
+        systemDeptDelete([record.id])
+          .then(() => {
+            message.success('删除成功！');
+            reload();
+          })
+          .catch(() => {
+            // 删除失败
+            message.error('删除失败！');
+          });
       }
 
       function handleSuccess() {

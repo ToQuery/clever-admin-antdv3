@@ -31,6 +31,13 @@ export const systemDeptColumns: BasicColumn[] = [
 
 export const systemDeptSearchFormSchema: FormSchema[] = [
   {
+    field: 'id',
+    label: '主键ID',
+    component: 'Input',
+    required: false,
+    show: false,
+  },
+  {
     field: 'deptName',
     label: '部门名称',
     component: 'Input',

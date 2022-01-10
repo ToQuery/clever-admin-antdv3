@@ -1,7 +1,8 @@
 import { BasicColumn, FormSchema } from '/@/components/Table';
-import { h } from "vue";
+import { h } from 'vue';
 import { Tag } from 'ant-design-vue';
 import { MenuListItem } from '/@/api/system/model/menuModel';
+import { systemMenuTree } from '/@/api/system/menu';
 
 export const systemMenuColumns: BasicColumn[] = [
   {
@@ -62,16 +63,26 @@ export const systemMenuSearchFormSchema: FormSchema[] = [
 
 export const systemMenuFormSchema: FormSchema[] = [
   {
+    field: 'id',
+    label: '主键ID',
+    component: 'Input',
+    required: false,
+    show: false,
+  },
+  {
     field: 'menuName',
     label: '菜单名称',
     component: 'Input',
     required: true,
   },
   {
-    field: 'parentMenu',
+    field: 'parentId',
     label: '上级菜单',
-    component: 'TreeSelect',
+    component: 'ApiTreeSelect',
+    required: true,
     componentProps: {
+      api: () => systemMenuTree(),
+      resultField: 'content',
       fieldNames: {
         label: 'menuName',
         key: 'id',
@@ -91,6 +102,7 @@ export const systemMenuFormSchema: FormSchema[] = [
     field: 'menuStatus',
     label: '菜单状态',
     component: 'RadioButtonGroup',
+    required: true,
     defaultValue: '1',
     componentProps: {
       options: [

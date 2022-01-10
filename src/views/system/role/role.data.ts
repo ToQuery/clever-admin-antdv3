@@ -57,6 +57,13 @@ export const searchFormSchema: FormSchema[] = [
 
 export const systemRoleFormSchema: FormSchema[] = [
   {
+    field: 'id',
+    label: '主键ID',
+    component: 'Input',
+    required: false,
+    show: false,
+  },
+  {
     field: 'roleName',
     label: '角色名称',
     component: 'Input',

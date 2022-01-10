@@ -6,6 +6,7 @@
       </template>
       <template #action="{ record }">
         <TableAction
+          v-if="record.id !== '0'"
           :actions="[
             {
               icon: 'clarity:note-edit-line',
@@ -30,12 +31,13 @@
   import { defineComponent, nextTick } from 'vue';
 
   import { BasicTable, useTable, TableAction } from '/@/components/Table';
-  import { systemMenuList, systemMenuTree } from "/@/api/system/menu";
+  import { systemMenuDelete, systemMenuTree } from '/@/api/system/menu';
 
   import MenuModal from './MenuModal.vue';
 
   import { systemMenuColumns, systemMenuSearchFormSchema } from './menu.data';
   import { useModal } from '/@/components/Modal';
+  import { message } from 'ant-design-vue';
 
   export default defineComponent({
     name: 'SystemMenu',
@@ -91,7 +93,15 @@
       }
 
       function handleDelete(record: Recordable) {
-        console.log(record);
+        systemMenuDelete([record.id])
+          .then(() => {
+            message.success('删除成功！');
+            reload();
+          })
+          .catch(() => {
+            // 删除失败
+            message.error('删除失败！');
+          });
       }
 
       function handleSuccess() {

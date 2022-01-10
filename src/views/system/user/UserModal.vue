@@ -16,7 +16,6 @@
     emits: ['success', 'register'],
     setup(_, { emit }) {
       const isUpdate = ref(true);
-      const rowId = ref('');
 
       const [registerForm, { setFieldsValue, updateSchema, resetFields, validate }] = useForm({
         labelWidth: 100,
@@ -33,7 +32,6 @@
         isUpdate.value = !!data?.isUpdate;
 
         if (unref(isUpdate)) {
-          rowId.value = data.record.id;
           systemUserDetail(data.record.id)
             .then((res) => {
               setFieldsValue(res.content);
@@ -65,7 +63,7 @@
               closeModal();
               emit('success', {
                 isUpdate: unref(isUpdate),
-                values: { ...values, id: rowId.value },
+                values: { ...values },
               });
             })
             .catch((err) => {

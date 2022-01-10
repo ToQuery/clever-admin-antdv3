@@ -39,6 +39,7 @@
   import UserModal from './UserModal.vue';
 
   import { systemColumns, systemUserSearchFormSchema } from './user.data';
+  import { message } from 'ant-design-vue';
 
   export default defineComponent({
     name: 'SystemUser',
@@ -100,18 +101,14 @@
       }
 
       function handleDelete(record: Recordable) {
-        console.log(record);
         systemUserDelete([record.id])
           .then(() => {
+            message.success('删除成功！');
             reload();
           })
-          .catch((e) => {
+          .catch(() => {
             // 删除失败
-            console.error('handleDelete catch', record, e);
-          })
-          .finally(() => {
-            //
-            console.error('handleDelete finally', record);
+            message.error('删除失败！');
           });
       }
 
