@@ -1,9 +1,9 @@
 export type DeptListItem = {
   id?: string;
-  menuName?: string;
-  menuCode?: string;
-  menuStatus?: number;
-  menuLevel?: number;
+  deptName?: string;
+  deptCode?: string;
+  deptStatus?: number;
+  deptLevel?: number;
   sortNum?: number;
   parentId?: string;
   children?: DeptListItem[];

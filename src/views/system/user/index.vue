@@ -13,6 +13,11 @@
               onClick: handleEdit.bind(null, record),
             },
             {
+              icon: 'ant-design:apartment-outlined',
+              tooltip: '用户授权',
+              onClick: handleAuthorize.bind(null, record),
+            },
+            {
               icon: 'ant-design:delete-outlined',
               color: 'error',
               tooltip: '删除此账号',
@@ -26,6 +31,7 @@
       </template>
     </BasicTable>
     <UserModal @register="registerModal" @success="handleSuccess" />
+    <UserAuthorizeModal @register="registerUserAuthorizeModal" @success="handleSuccess" />
   </PageWrapper>
 </template>
 <script lang="ts">
@@ -37,15 +43,17 @@
 
   import { useModal } from '/@/components/Modal';
   import UserModal from './UserModal.vue';
+  import UserAuthorizeModal from './UserAuthorizeModal.vue';
 
   import { systemColumns, systemUserSearchFormSchema } from './user.data';
   import { message } from 'ant-design-vue';
 
   export default defineComponent({
     name: 'SystemUser',
-    components: { BasicTable, PageWrapper, UserModal, TableAction },
+    components: { BasicTable, PageWrapper, UserModal, UserAuthorizeModal, TableAction },
     setup() {
       const [registerModal, { openModal }] = useModal();
+      const [registerUserAuthorizeModal, { openModal: openUserAuthorizeModal }] = useModal();
       const searchInfo = reactive<Recordable>({});
       const [registerTable, { reload, updateTableDataRecord }] = useTable({
         title: '账号列表',
@@ -100,6 +108,18 @@
         );
       }
 
+      function handleAuthorize(record: Recordable) {
+        console.log(record);
+        openUserAuthorizeModal(
+          true,
+          {
+            record,
+            isUpdate: true,
+          },
+          true,
+        );
+      }
+
       function handleDelete(record: Recordable) {
         systemUserDelete([record.id])
           .then(() => {
@@ -126,8 +146,10 @@
       return {
         registerTable,
         registerModal,
+        registerUserAuthorizeModal,
         handleCreate,
         handleEdit,
+        handleAuthorize,
         handleDelete,
         handleSuccess,
         searchInfo,

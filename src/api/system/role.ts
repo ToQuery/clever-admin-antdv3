@@ -4,12 +4,20 @@ import { RoleListItem } from '/@/api/system/model/roleModel';
 
 enum Api {
   SystemRole = '/sys/role',
+  SystemRoleList = '/sys/role/list',
 }
 
 //
 export const systemRolePage = (params?: RequestParam & RoleListItem) =>
   defHttp.get<ResponseResult<RoleListItem[]>>({
     url: Api.SystemRole,
+    params,
+  });
+
+//
+export const systemRoleList = (params?: RoleListItem) =>
+  defHttp.get<ResponseResult<RoleListItem[]>>({
+    url: Api.SystemRoleList,
     params,
   });
 

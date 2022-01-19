@@ -17,7 +17,7 @@ export const systemMenuColumns: BasicColumn[] = [
     width: 180,
   },
   {
-    title: '菜单状态',
+    title: '状态',
     dataIndex: 'menuStatus',
     width: 180,
     customRender: ({ record }) => {
@@ -53,8 +53,8 @@ export const systemMenuSearchFormSchema: FormSchema[] = [
     component: 'Select',
     componentProps: {
       options: [
-        { label: '停用', value: '0' },
-        { label: '启用', value: '1' },
+        { label: '启用', value: 1 },
+        { label: '停用', value: 0 },
       ],
     },
     colProps: { span: 8 },
@@ -96,18 +96,18 @@ export const systemMenuFormSchema: FormSchema[] = [
     label: '排序',
     required: true,
     component: 'Input',
-    defaultValue: '1',
+    defaultValue: 1,
   },
   {
     field: 'menuStatus',
     label: '菜单状态',
     component: 'RadioButtonGroup',
     required: true,
-    defaultValue: '1',
+    defaultValue: 1,
     componentProps: {
       options: [
-        { label: '禁用', value: '0' },
-        { label: '启用', value: '1' },
+        { label: '启用', value: 1 },
+        { label: '禁用', value: 0 },
       ],
     },
   },

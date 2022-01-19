@@ -12,7 +12,7 @@ export const columns: BasicColumn[] = [
     align: 'left',
   },
   {
-    title: '角色状态',
+    title: '状态',
     dataIndex: 'roleStatus',
     width: 180,
     customRender: ({ record }) => {
@@ -48,8 +48,8 @@ export const searchFormSchema: FormSchema[] = [
     component: 'Select',
     componentProps: {
       options: [
-        { label: '启用', value: '1' },
-        { label: '停用', value: '0' },
+        { label: '启用', value: 1 },
+        { label: '停用', value: 0 },
       ],
     },
     colProps: { span: 8 },
@@ -79,13 +79,13 @@ export const systemRoleFormSchema: FormSchema[] = [
   },
   {
     field: 'roleStatus',
-    label: '角色状态',
+    label: '状态',
     component: 'RadioButtonGroup',
-    defaultValue: '1',
+    defaultValue: 1,
     componentProps: {
       options: [
-        { label: '启用', value: '1' },
-        { label: '禁用', value: '0' },
+        { label: '启用', value: 1 },
+        { label: '禁用', value: 0 },
       ],
     },
   },
@@ -94,6 +94,7 @@ export const systemRoleFormSchema: FormSchema[] = [
     label: '菜单',
     required: true,
     component: 'ApiTree',
+    changeEvent: 'check',
     componentProps: {
       api: () => systemMenuTree(),
       checkable: true, // 显示多选

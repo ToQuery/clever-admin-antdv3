@@ -5,7 +5,7 @@ export type UserListItem = {
   avatar?: string;
   phone?: string;
   email?: string;
-  enabled?: boolean;
+  userStatus?: number;
   changePasswordDateTime?: string;
 };
 
