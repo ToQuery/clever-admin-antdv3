@@ -2,7 +2,7 @@
   <div>
     <BasicTable @register="registerTable" @fetch-success="onFetchSuccess">
       <template #toolbar>
-        <a-button type="primary" @click="handleCreate"> 新增部门 </a-button>
+        <a-button type="primary" @click="handleCreate"> 新增岗位 </a-button>
       </template>
       <template #action="{ record }">
         <TableAction
@@ -24,33 +24,33 @@
         />
       </template>
     </BasicTable>
-    <DeptModal @register="registerModal" @success="handleSuccess" />
+    <PostModal @register="registerModal" @success="handleSuccess" />
   </div>
 </template>
 <script lang="ts">
   import { defineComponent, nextTick } from 'vue';
 
   import { BasicTable, useTable, TableAction } from '/@/components/Table';
-  import { systemDeptDelete, systemDeptTree } from '/@/api/system/dept';
+  import { systemPostDelete, systemPostTree } from '/@/api/system/post';
 
-  import DeptModal from './DeptModal.vue';
+  import PostModal from './PostModal.vue';
 
-  import { systemDeptColumns, systemDeptSearchFormSchema } from './dept.data';
+  import { systemPostColumns, systemPostSearchFormSchema } from './post.data';
   import { useModal } from '/@/components/Modal';
   import { message } from 'ant-design-vue';
 
   export default defineComponent({
-    name: 'SystemDept',
-    components: { BasicTable, DeptModal, TableAction },
+    name: 'SystemPost',
+    components: { BasicTable, PostModal, TableAction },
     setup() {
       const [registerModal, { openModal }] = useModal();
       const [registerTable, { reload, expandAll }] = useTable({
-        title: '部门列表',
-        api: systemDeptTree,
-        columns: systemDeptColumns,
+        title: '岗位列表',
+        api: systemPostTree,
+        columns: systemPostColumns,
         formConfig: {
           labelWidth: 120,
-          schemas: systemDeptSearchFormSchema,
+          schemas: systemPostSearchFormSchema,
         },
         fetchSetting: {
           // 请求接口当前页数
@@ -93,7 +93,7 @@
       }
 
       function handleDelete(record: Recordable) {
-        systemDeptDelete([record.id])
+        systemPostDelete([record.id])
           .then(() => {
             message.success('删除成功！');
             reload();

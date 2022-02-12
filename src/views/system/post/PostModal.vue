@@ -7,11 +7,12 @@
   import { defineComponent, ref, computed, unref } from 'vue';
   import { BasicModal, useModalInner } from '/@/components/Modal';
   import { BasicForm, useForm } from '/@/components/Form/index';
-  import { systemRoleFormSchema } from './role.data';
-  import { systemRoleAdd, systemRoleDetail, systemRoleUpdate } from '/@/api/system/role';
+  import { systemPostFormSchema } from './post.data';
+
+  import { systemPostAdd, systemPostDetail, systemPostUpdate } from '/@/api/system/post';
 
   export default defineComponent({
-    name: 'SystemRoleModal',
+    name: 'SystemPostModal',
     components: { BasicModal, BasicForm },
     emits: ['success', 'register'],
     setup(_, { emit }) {
@@ -19,7 +20,7 @@
 
       const [registerForm, { resetFields, setFieldsValue, validate }] = useForm({
         labelWidth: 100,
-        schemas: systemRoleFormSchema,
+        schemas: systemPostFormSchema,
         showActionButtonGroup: false,
         actionColOptions: {
           span: 23,
@@ -32,7 +33,7 @@
         isUpdate.value = !!data?.isUpdate;
 
         if (unref(isUpdate)) {
-          systemRoleDetail(data.record.id)
+          systemPostDetail(data.record.id)
             .then((res) => {
               setFieldsValue(res.content);
             })
@@ -42,15 +43,15 @@
         }
       });
 
-      const getTitle = computed(() => (!unref(isUpdate) ? '新增角色' : '编辑角色'));
+      const getTitle = computed(() => (!unref(isUpdate) ? '新增菜单' : '编辑菜单'));
 
       async function handleSubmit() {
         try {
           const values = await validate();
           setModalProps({ confirmLoading: true });
-          // x
+          // TODO custom api
           console.log(values);
-          (unref(isUpdate) ? systemRoleUpdate(values) : systemRoleAdd(values))
+          (unref(isUpdate) ? systemPostUpdate(values) : systemPostAdd(values))
             .then(async (res) => {
               console.info(res);
               closeModal();

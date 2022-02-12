@@ -1,23 +1,23 @@
 import { BasicColumn, FormSchema } from '/@/components/Table';
 import { h } from 'vue';
 import { Tag } from 'ant-design-vue';
-import { DeptListItem } from '/@/api/system/model/deptModel';
-import { systemDeptTree } from '/@/api/system/dept';
+import { PostListItem } from '/@/api/system/model/postModel';
+import { systemPostTree } from '/@/api/system/post';
 
-export const systemDeptColumns: BasicColumn[] = [
+export const systemPostColumns: BasicColumn[] = [
   {
-    title: '部门名称',
-    dataIndex: 'deptName',
+    title: '岗位名称',
+    dataIndex: 'postName',
     width: 200,
     align: 'left',
   },
   {
     title: '状态',
-    dataIndex: 'deptStatus',
+    dataIndex: 'postStatus',
     width: 180,
     customRender: ({ record }) => {
-      const deptStatus = (record as DeptListItem).deptStatus;
-      const enable = deptStatus === 1;
+      const postStatus = (record as PostListItem).postStatus;
+      const enable = postStatus === 1;
       const color = enable ? 'green' : 'red';
       const text = enable ? '启用' : '停用';
       return h(Tag, { color: color }, () => text);
@@ -35,7 +35,7 @@ export const systemDeptColumns: BasicColumn[] = [
   },
 ];
 
-export const systemDeptSearchFormSchema: FormSchema[] = [
+export const systemPostSearchFormSchema: FormSchema[] = [
   {
     field: 'id',
     label: '主键ID',
@@ -44,13 +44,13 @@ export const systemDeptSearchFormSchema: FormSchema[] = [
     show: false,
   },
   {
-    field: 'deptName',
-    label: '部门名称',
+    field: 'postName',
+    label: '岗位名称',
     component: 'Input',
     colProps: { span: 8 },
   },
   {
-    field: 'deptStatus',
+    field: 'postStatus',
     label: '状态',
     component: 'Select',
     componentProps: {
@@ -63,22 +63,22 @@ export const systemDeptSearchFormSchema: FormSchema[] = [
   },
 ];
 
-export const systemDeptFormSchema: FormSchema[] = [
+export const systemPostFormSchema: FormSchema[] = [
   {
-    field: 'deptName',
-    label: '部门名称',
+    field: 'postName',
+    label: '岗位名称',
     component: 'Input',
     required: true,
   },
   {
     field: 'parentId',
-    label: '上级部门',
+    label: '上级岗位',
     component: 'ApiTreeSelect',
     componentProps: {
-      api: () => systemDeptTree(),
+      api: () => systemPostTree(),
       resultField: 'content',
       fieldNames: {
-        label: 'deptName',
+        label: 'postName',
         key: 'id',
         value: 'id',
       },
@@ -93,8 +93,8 @@ export const systemDeptFormSchema: FormSchema[] = [
     defaultValue: 1,
   },
   {
-    field: 'deptStatus',
-    label: '部门状态',
+    field: 'postStatus',
+    label: '岗位状态',
     component: 'RadioButtonGroup',
     defaultValue: 1,
     componentProps: {

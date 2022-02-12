@@ -1,20 +1,21 @@
 <template>
-  <div>
-    <BasicTable @register="registerTable" @fetch-success="onFetchSuccess">
+  <PageWrapper dense contentFullHeight fixedHeight contentClass="flex">
+    <BasicTable @register="registerTable" :searchInfo="searchInfo">
       <template #toolbar>
-        <a-button type="primary" @click="handleCreate"> 新增部门 </a-button>
+        <a-button type="primary" @click="handleCreate">新增字典</a-button>
       </template>
       <template #action="{ record }">
         <TableAction
-          v-if="record.id !== '0'"
           :actions="[
             {
               icon: 'clarity:note-edit-line',
+              tooltip: '编辑字典',
               onClick: handleEdit.bind(null, record),
             },
             {
               icon: 'ant-design:delete-outlined',
               color: 'error',
+              tooltip: '删除字典',
               popConfirm: {
                 title: '是否确认删除',
                 confirm: handleDelete.bind(null, record),
@@ -24,33 +25,45 @@
         />
       </template>
     </BasicTable>
-    <DeptModal @register="registerModal" @success="handleSuccess" />
-  </div>
+    <DictItemModal @register="registerModal" @success="handleSuccess" />
+  </PageWrapper>
 </template>
 <script lang="ts">
-  import { defineComponent, nextTick } from 'vue';
+  import { defineComponent, reactive } from 'vue';
 
   import { BasicTable, useTable, TableAction } from '/@/components/Table';
-  import { systemDeptDelete, systemDeptTree } from '/@/api/system/dept';
+  import { systemDictItemPage, systemDictItemDelete } from '/@/api/system/dictItem';
+  import { PageWrapper } from '/@/components/Page';
 
-  import DeptModal from './DeptModal.vue';
-
-  import { systemDeptColumns, systemDeptSearchFormSchema } from './dept.data';
   import { useModal } from '/@/components/Modal';
+  import DictItemModal from './DictItemModal.vue';
+
+  import { systemColumns, systemDictSearchFormSchema } from './dictItem.data';
   import { message } from 'ant-design-vue';
+  import { useRoute } from 'vue-router';
 
   export default defineComponent({
-    name: 'SystemDept',
-    components: { BasicTable, DeptModal, TableAction },
+    name: 'SystemUser',
+    components: { BasicTable, PageWrapper, DictItemModal, TableAction },
     setup() {
+      const route = useRoute();
+      const dictId = route.params?.id ?? -1;
+
       const [registerModal, { openModal }] = useModal();
-      const [registerTable, { reload, expandAll }] = useTable({
-        title: '部门列表',
-        api: systemDeptTree,
-        columns: systemDeptColumns,
+      const searchInfo = reactive<Recordable>({});
+      const [registerTable, { reload, updateTableDataRecord }] = useTable({
+        title: '字典列表',
+        beforeFetch: (params) => {
+          params.dictId = dictId;
+          return params;
+        },
+        api: systemDictItemPage,
+        rowKey: 'id',
+        columns: systemColumns,
         formConfig: {
           labelWidth: 120,
-          schemas: systemDeptSearchFormSchema,
+          schemas: systemDictSearchFormSchema,
+          autoSubmitOnEnter: true,
         },
         fetchSetting: {
           // 请求接口当前页数
@@ -62,20 +75,18 @@
           // 请求结果总数字段  支持 a.b.c
           totalField: 'page.totalElements',
         },
-        isTreeTable: true,
-        pagination: false,
-        striped: false,
         useSearchForm: true,
         showTableSetting: true,
         bordered: true,
-        showIndexColumn: false,
-        canResize: false,
+        handleSearchInfoFn(info) {
+          console.log('handleSearchInfoFn', info);
+          return info;
+        },
         actionColumn: {
-          width: 80,
+          width: 120,
           title: '操作',
           dataIndex: 'action',
           slots: { customRender: 'action' },
-          fixed: undefined,
         },
       });
 
@@ -86,14 +97,19 @@
       }
 
       function handleEdit(record: Recordable) {
-        openModal(true, {
-          record,
-          isUpdate: true,
-        });
+        console.log(record);
+        openModal(
+          true,
+          {
+            record,
+            isUpdate: true,
+          },
+          true,
+        );
       }
 
       function handleDelete(record: Recordable) {
-        systemDeptDelete([record.id])
+        systemDictItemDelete([record.id])
           .then(() => {
             message.success('删除成功！');
             reload();
@@ -104,13 +120,15 @@
           });
       }
 
-      function handleSuccess() {
-        reload();
-      }
-
-      function onFetchSuccess() {
-        // 演示默认展开所有表项
-        nextTick(expandAll);
+      function handleSuccess({ isUpdate, values }) {
+        if (isUpdate) {
+          // 演示不刷新表格直接更新内部数据。
+          // 注意：updateTableDataRecord要求表格的rowKey属性为string并且存在于每一行的record的keys中
+          const result = updateTableDataRecord(values.id, values);
+          console.log(result);
+        } else {
+          reload();
+        }
       }
 
       return {
@@ -120,7 +138,7 @@
         handleEdit,
         handleDelete,
         handleSuccess,
-        onFetchSuccess,
+        searchInfo,
       };
     },
   });

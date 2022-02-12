@@ -4,22 +4,29 @@
   </BasicModal>
 </template>
 <script lang="ts">
-  import { defineComponent, ref, computed, unref } from 'vue';
+  import { computed, defineComponent, ref, unref } from 'vue';
   import { BasicModal, useModalInner } from '/@/components/Modal';
   import { BasicForm, useForm } from '/@/components/Form/index';
-  import { systemRoleFormSchema } from './role.data';
-  import { systemRoleAdd, systemRoleDetail, systemRoleUpdate } from '/@/api/system/role';
+  import { systemDictFormSchema } from './dictItem.data';
+  import {
+    systemDictItemAdd,
+    systemDictItemDetail,
+    systemDictItemUpdate,
+  } from '/@/api/system/dictItem';
+  import { useRoute } from 'vue-router';
 
   export default defineComponent({
-    name: 'SystemRoleModal',
+    name: 'SystemDictModal',
     components: { BasicModal, BasicForm },
     emits: ['success', 'register'],
     setup(_, { emit }) {
+      const route = useRoute();
+      const dictId = route.params?.id ?? -1;
       const isUpdate = ref(true);
 
-      const [registerForm, { resetFields, setFieldsValue, validate }] = useForm({
+      const [registerForm, { setFieldsValue, updateSchema, resetFields, validate }] = useForm({
         labelWidth: 100,
-        schemas: systemRoleFormSchema,
+        schemas: systemDictFormSchema,
         showActionButtonGroup: false,
         actionColOptions: {
           span: 23,
@@ -27,12 +34,12 @@
       });
 
       const [registerModal, { setModalProps, closeModal }] = useModalInner(async (data) => {
-        resetFields();
-        setModalProps({ confirmLoading: false });
+        await resetFields();
+
         isUpdate.value = !!data?.isUpdate;
 
         if (unref(isUpdate)) {
-          systemRoleDetail(data.record.id)
+          systemDictItemDetail(data.record.id)
             .then((res) => {
               setFieldsValue(res.content);
             })
@@ -40,17 +47,25 @@
               setModalProps({ confirmLoading: false });
             });
         }
+
+        await updateSchema([
+          {
+            field: 'password',
+            ifShow: !unref(isUpdate),
+          },
+        ]);
       });
 
-      const getTitle = computed(() => (!unref(isUpdate) ? '新增角色' : '编辑角色'));
+      const getTitle = computed(() => (!unref(isUpdate) ? '新增字典项' : '编辑字典项'));
 
       async function handleSubmit() {
         try {
           const values = await validate();
           setModalProps({ confirmLoading: true });
           // x
+          values.dictId = dictId;
           console.log(values);
-          (unref(isUpdate) ? systemRoleUpdate(values) : systemRoleAdd(values))
+          (unref(isUpdate) ? systemDictItemUpdate(values) : systemDictItemAdd(values))
             .then(async (res) => {
               console.info(res);
               closeModal();
@@ -62,6 +77,8 @@
             .catch((err) => {
               console.error(err);
             });
+        } catch (e) {
+          console.error(e);
         } finally {
           setModalProps({ confirmLoading: false });
         }

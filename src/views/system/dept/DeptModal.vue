@@ -9,7 +9,12 @@
   import { BasicForm, useForm } from '/@/components/Form/index';
   import { systemDeptFormSchema } from './dept.data';
 
-  import { systemDeptDetail, systemDeptTree } from '/@/api/system/dept';
+  import {
+    systemDeptAdd,
+    systemDeptDetail,
+    systemDeptTree,
+    systemDeptUpdate
+  } from "/@/api/system/dept";
   import { systemUserAdd, systemUserUpdate } from '/@/api/system/user';
 
   export default defineComponent({
@@ -43,11 +48,6 @@
             });
         }
 
-        const treeData = await systemDeptTree();
-        updateSchema({
-          field: 'parentId',
-          componentProps: { treeData },
-        });
       });
 
       const getTitle = computed(() => (!unref(isUpdate) ? '新增菜单' : '编辑菜单'));
@@ -58,7 +58,7 @@
           setModalProps({ confirmLoading: true });
           // TODO custom api
           console.log(values);
-          (unref(isUpdate) ? systemUserUpdate(values) : systemUserAdd(values))
+          (unref(isUpdate) ? systemDeptUpdate(values) : systemDeptAdd(values))
             .then(async (res) => {
               console.info(res);
               closeModal();

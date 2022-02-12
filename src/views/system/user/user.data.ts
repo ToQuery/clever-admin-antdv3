@@ -150,6 +150,20 @@ export const systemUserFormSchema: FormSchema[] = [
     required: true,
     ifShow: true,
   },
+
+  {
+    field: 'userStatus',
+    label: '状态',
+    component: 'RadioButtonGroup',
+    required: true,
+    defaultValue: 1,
+    componentProps: {
+      options: [
+        { label: '启用', value: 1 },
+        { label: '禁用', value: 0 },
+      ],
+    },
+  },
   {
     label: '邮箱',
     field: 'email',
@@ -164,18 +178,5 @@ export const systemUserFormSchema: FormSchema[] = [
     label: '备注',
     field: 'remark',
     component: 'InputTextArea',
-  },
-  {
-    field: 'userStatus',
-    label: '状态',
-    component: 'Select',
-    defaultValue: 1,
-    componentProps: {
-      options: [
-        { label: '启用', value: 1 },
-        { label: '停用', value: 0 },
-      ],
-    },
-    colProps: { span: 8 },
   },
 ];

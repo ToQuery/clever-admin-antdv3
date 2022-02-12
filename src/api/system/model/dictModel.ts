@@ -5,10 +5,10 @@ export type DictListItem = {
   dictCode: string;
   description: string;
   sortNum: number;
-  dictItems: DictValueListItem[];
+  dictItems: DictItemListItem[];
 };
 
-export type DictValueListItem = {
+export type DictItemListItem = {
   id?: string;
   dictId?: string;
   itemText?: string;

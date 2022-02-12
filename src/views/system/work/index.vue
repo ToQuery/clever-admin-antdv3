@@ -1,12 +1,17 @@
 <template>
-  <div>
-    <BasicTable @register="registerTable" @fetch-success="onFetchSuccess">
+  <PageWrapper dense contentFullHeight fixedHeight contentClass="flex">
+    <DeptTree class="w-1/4 xl:w-1/5" @select="handleSelect" />
+    <BasicTable
+      @register="registerTable"
+      class="w-3/4 xl:w-4/5"
+      :searchInfo="searchInfo"
+      @fetch-success="onFetchSuccess"
+    >
       <template #toolbar>
-        <a-button type="primary" @click="handleCreate"> 新增部门 </a-button>
+        <a-button type="primary" @click="handleCreate"> 新增角色 </a-button>
       </template>
       <template #action="{ record }">
         <TableAction
-          v-if="record.id !== '0'"
           :actions="[
             {
               icon: 'clarity:note-edit-line',
@@ -24,33 +29,34 @@
         />
       </template>
     </BasicTable>
-    <DeptModal @register="registerModal" @success="handleSuccess" />
-  </div>
+    <WorkModal @register="registerModal" @success="handleSuccess" />
+  </PageWrapper>
 </template>
 <script lang="ts">
-  import { defineComponent, nextTick } from 'vue';
+  import { defineComponent, nextTick, reactive } from 'vue';
 
   import { BasicTable, useTable, TableAction } from '/@/components/Table';
-  import { systemDeptDelete, systemDeptTree } from '/@/api/system/dept';
+  import { systemWorkDelete, systemWorkPage } from '/@/api/system/work';
 
-  import DeptModal from './DeptModal.vue';
-
-  import { systemDeptColumns, systemDeptSearchFormSchema } from './dept.data';
+  import WorkModal from './WorkModal.vue';
+  import DeptTree from './DeptTree.vue';
+  import { columns, searchFormSchema } from './work.data';
   import { useModal } from '/@/components/Modal';
   import { message } from 'ant-design-vue';
 
   export default defineComponent({
-    name: 'SystemDept',
-    components: { BasicTable, DeptModal, TableAction },
+    name: 'SystemWork',
+    components: { BasicTable, DeptTree, WorkModal, TableAction },
     setup() {
       const [registerModal, { openModal }] = useModal();
+      const searchInfo = reactive<Recordable>({});
       const [registerTable, { reload, expandAll }] = useTable({
-        title: '部门列表',
-        api: systemDeptTree,
-        columns: systemDeptColumns,
+        title: '角色列表',
+        api: systemWorkPage,
+        columns,
         formConfig: {
           labelWidth: 120,
-          schemas: systemDeptSearchFormSchema,
+          schemas: searchFormSchema,
         },
         fetchSetting: {
           // 请求接口当前页数
@@ -62,14 +68,9 @@
           // 请求结果总数字段  支持 a.b.c
           totalField: 'page.totalElements',
         },
-        isTreeTable: true,
-        pagination: false,
-        striped: false,
         useSearchForm: true,
         showTableSetting: true,
         bordered: true,
-        showIndexColumn: false,
-        canResize: false,
         actionColumn: {
           width: 80,
           title: '操作',
@@ -93,7 +94,7 @@
       }
 
       function handleDelete(record: Recordable) {
-        systemDeptDelete([record.id])
+        systemWorkDelete([record.id])
           .then(() => {
             message.success('删除成功！');
             reload();
@@ -102,6 +103,11 @@
             // 删除失败
             message.error('删除失败！');
           });
+      }
+
+      function handleSelect(deptId = '') {
+        searchInfo.deptId = deptId;
+        reload();
       }
 
       function handleSuccess() {
@@ -119,8 +125,10 @@
         handleCreate,
         handleEdit,
         handleDelete,
+        handleSelect,
         handleSuccess,
         onFetchSuccess,
+        searchInfo,
       };
     },
   });

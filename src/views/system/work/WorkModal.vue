@@ -7,11 +7,11 @@
   import { defineComponent, ref, computed, unref } from 'vue';
   import { BasicModal, useModalInner } from '/@/components/Modal';
   import { BasicForm, useForm } from '/@/components/Form/index';
-  import { systemRoleFormSchema } from './role.data';
-  import { systemRoleAdd, systemRoleDetail, systemRoleUpdate } from '/@/api/system/role';
+  import { systemWorkFormSchema } from './work.data';
+  import { systemWorkAdd, systemWorkDetail, systemWorkUpdate } from '/@/api/system/work';
 
   export default defineComponent({
-    name: 'SystemRoleModal',
+    name: 'SystemWorkModal',
     components: { BasicModal, BasicForm },
     emits: ['success', 'register'],
     setup(_, { emit }) {
@@ -19,7 +19,7 @@
 
       const [registerForm, { resetFields, setFieldsValue, validate }] = useForm({
         labelWidth: 100,
-        schemas: systemRoleFormSchema,
+        schemas: systemWorkFormSchema,
         showActionButtonGroup: false,
         actionColOptions: {
           span: 23,
@@ -32,7 +32,7 @@
         isUpdate.value = !!data?.isUpdate;
 
         if (unref(isUpdate)) {
-          systemRoleDetail(data.record.id)
+          systemWorkDetail(data.record.id)
             .then((res) => {
               setFieldsValue(res.content);
             })
@@ -50,7 +50,7 @@
           setModalProps({ confirmLoading: true });
           // x
           console.log(values);
-          (unref(isUpdate) ? systemRoleUpdate(values) : systemRoleAdd(values))
+          (unref(isUpdate) ? systemWorkUpdate(values) : systemWorkAdd(values))
             .then(async (res) => {
               console.info(res);
               closeModal();

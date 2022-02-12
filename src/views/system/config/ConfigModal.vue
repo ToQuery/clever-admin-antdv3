@@ -4,22 +4,22 @@
   </BasicModal>
 </template>
 <script lang="ts">
-  import { defineComponent, ref, computed, unref } from 'vue';
+  import { computed, defineComponent, ref, unref } from 'vue';
   import { BasicModal, useModalInner } from '/@/components/Modal';
   import { BasicForm, useForm } from '/@/components/Form/index';
-  import { systemRoleFormSchema } from './role.data';
-  import { systemRoleAdd, systemRoleDetail, systemRoleUpdate } from '/@/api/system/role';
+  import { systemConfigFormSchema } from './config.data';
+  import { systemConfigAdd, systemConfigDetail, systemConfigUpdate } from '/@/api/system/config';
 
   export default defineComponent({
-    name: 'SystemRoleModal',
+    name: 'SystemConfigModal',
     components: { BasicModal, BasicForm },
     emits: ['success', 'register'],
     setup(_, { emit }) {
       const isUpdate = ref(true);
 
-      const [registerForm, { resetFields, setFieldsValue, validate }] = useForm({
+      const [registerForm, { setFieldsValue, updateSchema, resetFields, validate }] = useForm({
         labelWidth: 100,
-        schemas: systemRoleFormSchema,
+        schemas: systemConfigFormSchema,
         showActionButtonGroup: false,
         actionColOptions: {
           span: 23,
@@ -27,12 +27,12 @@
       });
 
       const [registerModal, { setModalProps, closeModal }] = useModalInner(async (data) => {
-        resetFields();
-        setModalProps({ confirmLoading: false });
+        await resetFields();
+
         isUpdate.value = !!data?.isUpdate;
 
         if (unref(isUpdate)) {
-          systemRoleDetail(data.record.id)
+          systemConfigDetail(data.record.id)
             .then((res) => {
               setFieldsValue(res.content);
             })
@@ -40,9 +40,16 @@
               setModalProps({ confirmLoading: false });
             });
         }
+
+        await updateSchema([
+          {
+            field: 'password',
+            ifShow: !unref(isUpdate),
+          },
+        ]);
       });
 
-      const getTitle = computed(() => (!unref(isUpdate) ? '新增角色' : '编辑角色'));
+      const getTitle = computed(() => (!unref(isUpdate) ? '新增字典' : '编辑字典'));
 
       async function handleSubmit() {
         try {
@@ -50,7 +57,7 @@
           setModalProps({ confirmLoading: true });
           // x
           console.log(values);
-          (unref(isUpdate) ? systemRoleUpdate(values) : systemRoleAdd(values))
+          (unref(isUpdate) ? systemConfigUpdate(values) : systemConfigAdd(values))
             .then(async (res) => {
               console.info(res);
               closeModal();
@@ -62,6 +69,8 @@
             .catch((err) => {
               console.error(err);
             });
+        } catch (e) {
+          console.error(e);
         } finally {
           setModalProps({ confirmLoading: false });
         }

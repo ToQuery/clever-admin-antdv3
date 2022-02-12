@@ -60,6 +60,53 @@ const system: AppRouteModule = {
       component: () => import('/@/views/system/dept/index.vue'),
     },
     {
+      path: 'post',
+      name: 'SystemPost',
+      meta: {
+        title: '岗位管理',
+        ignoreKeepAlive: false,
+      },
+      component: () => import('/@/views/system/post/index.vue'),
+    },
+    {
+      path: 'work',
+      name: 'SystemWork',
+      meta: {
+        title: '工作管理',
+        ignoreKeepAlive: false,
+      },
+      component: () => import('/@/views/system/work/index.vue'),
+    },
+    {
+      path: 'dict',
+      name: 'SystemDict',
+      meta: {
+        title: '字典管理',
+        ignoreKeepAlive: false,
+      },
+      component: () => import('/@/views/system/dict/index.vue'),
+    },
+    {
+      path: 'dict/:id',
+      name: 'SystemDictItem',
+      meta: {
+        title: '字典项管理',
+        hideMenu: true,
+        ignoreKeepAlive: true,
+        currentActiveMenu: '/system/dict',
+      },
+      component: () => import('/@/views/system/dictItem/index.vue'),
+    },
+    {
+      path: 'config',
+      name: 'SystemConfig',
+      meta: {
+        title: '配置管理',
+        ignoreKeepAlive: false,
+      },
+      component: () => import('/@/views/system/config/index.vue'),
+    },
+    {
       path: 'changePassword',
       name: 'ChangePassword',
       meta: {
