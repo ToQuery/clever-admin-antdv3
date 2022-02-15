@@ -7,12 +7,12 @@
   import { defineComponent, ref, computed, unref } from 'vue';
   import { BasicModal, useModalInner } from '/@/components/Modal';
   import { BasicForm, useForm } from '/@/components/Form/index';
-  import { systemMenuFormSchema } from './menu.data';
+  import { systemAreaFormSchema } from './area.data';
 
-  import { systemMenuAdd, systemMenuDetail, systemMenuUpdate } from '/@/api/system/menu';
+  import { systemAreaAdd, systemAreaDetail, systemAreaUpdate } from '/@/api/system/area';
 
   export default defineComponent({
-    name: 'SystemMenuModal',
+    name: 'SystemAreaModal',
     components: { BasicModal, BasicForm },
     emits: ['success', 'register'],
     setup(_, { emit }) {
@@ -20,7 +20,7 @@
 
       const [registerForm, { resetFields, setFieldsValue, validate }] = useForm({
         labelWidth: 100,
-        schemas: systemMenuFormSchema,
+        schemas: systemAreaFormSchema,
         showActionButtonGroup: false,
         actionColOptions: {
           span: 23,
@@ -33,7 +33,7 @@
         isUpdate.value = !!data?.isUpdate;
 
         if (unref(isUpdate)) {
-          systemMenuDetail(data.record.id)
+          systemAreaDetail(data.record.id)
             .then((res) => {
               setFieldsValue(res.content);
             })
@@ -41,15 +41,9 @@
               setModalProps({ confirmLoading: false });
             });
         }
-
-        // const { content } = await systemMenuTree();
-        // updateSchema({
-        //   field: 'parentId',
-        //   componentProps: { treeData: content },
-        // });
       });
 
-      const getTitle = computed(() => (!unref(isUpdate) ? '新增菜单' : '编辑菜单'));
+      const getTitle = computed(() => (!unref(isUpdate) ? '新增行政区' : '编辑行政区'));
 
       async function handleSubmit() {
         try {
@@ -57,7 +51,7 @@
           setModalProps({ confirmLoading: true });
           // x
           console.log(values);
-          (unref(isUpdate) ? systemMenuUpdate(values) : systemMenuAdd(values))
+          (unref(isUpdate) ? systemAreaUpdate(values) : systemAreaAdd(values))
             .then(async (res) => {
               console.info(res);
               closeModal();

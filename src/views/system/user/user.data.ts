@@ -36,7 +36,15 @@ export const systemColumns: BasicColumn[] = [
   },
   {
     title: '角色',
+    defaultHidden: true,
     dataIndex: 'role',
+    // customRender: ({ record }) => {
+    //   const roles = (record as UserListItem).roles;
+    //   return h(Tag ,
+    //     { color: 'blue', roles: roles },
+    //     (roles) => roles.map(role => h(Tag, { color: 'green' }, () => role.roleName))
+    //   );
+    // },
   },
   {
     title: '备注',
@@ -105,14 +113,14 @@ export const systemUserAuthorizeFormSchema: FormSchema[] = [
       // use id as value
       valueField: 'id',
       // not request untill to select
-      immediate: false,
-      onChange: (e) => {
-        console.log('selected:', e);
-      },
+      // immediate: false,
+      // onChange: (e) => {
+      //   console.log('selected:', e);
+      // },
       // atfer request callback
-      onOptionsChange: (options) => {
-        console.log('get options', options.length, options);
-      },
+      // onOptionsChange: (options) => {
+      //   console.log('get options', options.length, options);
+      // },
     },
   },
 ];

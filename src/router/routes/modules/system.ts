@@ -51,6 +51,15 @@ const system: AppRouteModule = {
       component: () => import('/@/views/system/log/index.vue'),
     },
     {
+      path: 'area',
+      name: 'SystemArea',
+      meta: {
+        title: '行政区管理',
+        ignoreKeepAlive: false,
+      },
+      component: () => import('/@/views/system/area/index.vue'),
+    },
+    {
       path: 'dept',
       name: 'SystemDept',
       meta: {

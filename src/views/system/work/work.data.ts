@@ -74,8 +74,8 @@ export const systemWorkFormSchema: FormSchema[] = [
     show: false,
   },
   {
-    field: 'workName',
-    label: '角色名称',
+    field: 'userId',
+    label: '用户',
     component: 'Input',
     required: true,
   },

@@ -65,6 +65,13 @@ export const systemPostSearchFormSchema: FormSchema[] = [
 
 export const systemPostFormSchema: FormSchema[] = [
   {
+    field: 'id',
+    label: '主键ID',
+    component: 'Input',
+    required: false,
+    show: false,
+  },
+  {
     field: 'postName',
     label: '岗位名称',
     component: 'Input',

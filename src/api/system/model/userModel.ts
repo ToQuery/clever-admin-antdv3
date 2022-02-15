@@ -1,3 +1,5 @@
+import { RoleListItem } from "/@/api/system/model/roleModel";
+
 export type UserListItem = {
   id?: string;
   username?: string;
@@ -6,6 +8,7 @@ export type UserListItem = {
   phone?: string;
   email?: string;
   userStatus?: number;
+  roles?: RoleListItem[];
   changePasswordDateTime?: string;
 };
 

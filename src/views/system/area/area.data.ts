@@ -1,28 +1,28 @@
 import { BasicColumn, FormSchema } from '/@/components/Table';
 import { h } from 'vue';
 import { Tag } from 'ant-design-vue';
-import { MenuListItem } from '/@/api/system/model/menuModel';
-import { systemMenuTree } from '/@/api/system/menu';
+import { AreaListItem } from '/@/api/system/model/areaModel';
+import { systemAreaTree } from '/@/api/system/area';
 
-export const systemMenuColumns: BasicColumn[] = [
+export const systemAreaColumns: BasicColumn[] = [
   {
-    title: '菜单名称',
-    dataIndex: 'menuName',
+    title: '行政区名称',
+    dataIndex: 'areaName',
     width: 200,
     align: 'left',
   },
   {
-    title: '菜单编码',
-    dataIndex: 'menuCode',
+    title: '行政区编码',
+    dataIndex: 'areaCode',
     width: 180,
   },
   {
     title: '状态',
-    dataIndex: 'menuStatus',
+    dataIndex: 'areaStatus',
     width: 180,
     customRender: ({ record }) => {
-      const menuStatus = (record as MenuListItem).menuStatus;
-      const enable = menuStatus === 1;
+      const areaStatus = (record as AreaListItem).areaStatus;
+      const enable = areaStatus === 1;
       const color = enable ? 'green' : 'red';
       const text = enable ? '启用' : '停用';
       return h(Tag, { color: color }, () => text);
@@ -40,15 +40,15 @@ export const systemMenuColumns: BasicColumn[] = [
   },
 ];
 
-export const systemMenuSearchFormSchema: FormSchema[] = [
+export const systemAreaSearchFormSchema: FormSchema[] = [
   {
-    field: 'menuName',
-    label: '菜单名称',
+    field: 'areaName',
+    label: '行政区名称',
     component: 'Input',
     colProps: { span: 8 },
   },
   {
-    field: 'menuStatus',
+    field: 'areaStatus',
     label: '状态',
     component: 'Select',
     componentProps: {
@@ -61,7 +61,7 @@ export const systemMenuSearchFormSchema: FormSchema[] = [
   },
 ];
 
-export const systemMenuFormSchema: FormSchema[] = [
+export const systemAreaFormSchema: FormSchema[] = [
   {
     field: 'id',
     label: '主键ID',
@@ -70,27 +70,27 @@ export const systemMenuFormSchema: FormSchema[] = [
     show: false,
   },
   {
-    field: 'menuName',
-    label: '菜单名称',
+    field: 'areaName',
+    label: '行政区名称',
     component: 'Input',
     required: true,
   },
   {
-    field: 'menuCode',
-    label: '菜单编码',
+    field: 'areaCode',
+    label: '行政区编码',
     component: 'Input',
     required: true,
   },
   {
     field: 'parentId',
-    label: '上级菜单',
+    label: '上级行政区',
     component: 'ApiTreeSelect',
     required: true,
     componentProps: {
-      api: () => systemMenuTree(),
+      api: () => systemAreaTree(),
       resultField: 'content',
       fieldNames: {
-        label: 'menuName',
+        label: 'areaName',
         key: 'id',
         value: 'id',
       },
@@ -105,8 +105,8 @@ export const systemMenuFormSchema: FormSchema[] = [
     defaultValue: 1,
   },
   {
-    field: 'menuStatus',
-    label: '菜单状态',
+    field: 'areaStatus',
+    label: '行政区状态',
     component: 'RadioButtonGroup',
     required: true,
     defaultValue: 1,
