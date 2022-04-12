@@ -92,6 +92,7 @@ export type ComponentType =
   | 'ApiSelect'
   | 'TreeSelect'
   | 'ApiTree'
+  | 'ApiModalTableChecked'
   | 'ApiTreeSelect'
   | 'ApiRadioGroup'
   | 'RadioButtonGroup'
