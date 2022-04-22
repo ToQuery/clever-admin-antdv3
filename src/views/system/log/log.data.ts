@@ -1,6 +1,4 @@
 import { BasicColumn, FormSchema } from '/@/components/Table';
-import { h } from 'vue';
-import { LogListItem } from '/@/api/system/model/logModel';
 
 export const systemLogColumns: BasicColumn[] = [
   {
@@ -17,26 +15,8 @@ export const systemLogColumns: BasicColumn[] = [
     dataIndex: 'logType',
   },
   {
-    title: '操作账号',
-    dataIndex: 'systemUser',
-    children: [
-      {
-        title: '用户名',
-        dataIndex: 'username',
-        customRender: ({ record }) => {
-          const username = (record as LogListItem).sysUser?.username;
-          return h(() => username);
-        },
-      },
-      {
-        title: '昵称',
-        dataIndex: 'nickname',
-        customRender: ({ record }) => {
-          const nickname = (record as LogListItem).sysUser?.nickname;
-          return h(() => nickname);
-        },
-      },
-    ],
+    title: '用户名',
+    dataIndex: 'userName',
   },
   {
     title: '操作时间',
@@ -46,22 +26,10 @@ export const systemLogColumns: BasicColumn[] = [
 
 export const systemLogSearchFormSchema: FormSchema[] = [
   {
-    field: 'moduleName',
-    label: '模块名称',
-    component: 'Input',
-    colProps: { span: 8 },
-  },
-  {
-    field: 'bizName',
-    label: '业务名称',
-    component: 'Input',
-    colProps: { span: 8 },
-  },
-  {
     label: '日志类型',
     field: 'logType',
     component: 'Select',
-    colProps: { span: 8 },
+    colProps: { span: 6 },
     componentProps: {
       options: [
         { label: '查询', value: 'QUERY' },
@@ -70,5 +38,23 @@ export const systemLogSearchFormSchema: FormSchema[] = [
         { label: '删除', value: 'DELETE' },
       ],
     },
+  },
+  {
+    field: 'moduleName',
+    label: '模块名称',
+    component: 'Input',
+    colProps: { span: 6 },
+  },
+  {
+    field: 'bizName',
+    label: '业务名称',
+    component: 'Input',
+    colProps: { span: 6 },
+  },
+  {
+    field: 'userName',
+    label: '用户名',
+    component: 'Input',
+    colProps: { span: 6 },
   },
 ];

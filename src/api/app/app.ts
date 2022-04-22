@@ -2,7 +2,7 @@ import { defHttp } from '/@/utils/http/axios';
 import { LoginRequest, LoginResponse, UserInfo } from './model/appModel';
 
 import { ErrorMessageMode } from '/#/axios';
-import { ResponseResult } from '/@/api/model/baseModel';
+import { Result } from '/#/axios';
 
 enum Api {
   Login = '/user/login',
@@ -14,10 +14,13 @@ enum Api {
  * @description: user login api
  */
 export function login(params: LoginRequest, mode: ErrorMessageMode = 'modal') {
-  return defHttp.post<ResponseResult<LoginResponse>>(
+  return defHttp.post<Result<LoginResponse>>(
     {
       url: Api.Login,
-      params,
+      auth: {
+        username: params.username,
+        password: params.password,
+      },
     },
     {
       errorMessageMode: mode,
@@ -29,10 +32,9 @@ export function login(params: LoginRequest, mode: ErrorMessageMode = 'modal') {
  * @description: getUserInfo
  */
 export function getUserInfo() {
-  return defHttp.get<ResponseResult<UserInfo>>({ url: Api.UserInfo }, { errorMessageMode: 'none' });
+  return defHttp.get<Result<UserInfo>>({ url: Api.UserInfo }, { errorMessageMode: 'none' });
 }
 
 export function logout() {
   return defHttp.get({ url: Api.Logout });
 }
-
