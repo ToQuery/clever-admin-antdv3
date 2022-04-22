@@ -17,7 +17,6 @@ import { useErrorLogStoreWithOut } from '/@/store/modules/errorLog';
 import { useI18n } from '/@/hooks/web/useI18n';
 import { joinTimestamp, formatRequestDate } from './helper';
 import { useUserStoreWithOut } from '/@/store/modules/user';
-import { ResponseResult } from "/@/api/model/baseModel";
 import { AxiosRetry } from '/@/utils/http/axios/axiosRetry';
 
 const globSetting = useGlobSetting();
@@ -51,7 +50,7 @@ const transform: AxiosTransform = {
       throw new Error(t('sys.api.apiRequestFailed'));
     }
     //  这里 code，result，message为 后台统一的字段，需要在 types.ts内修改为项目自己的接口返回格式
-    const { code, success, message } = data as ResponseResult<any>;
+    const { code, success, message } = data;
 
     // 这里逻辑可以根据项目进行修改
     // const hasSuccess = data && Reflect.has(data, 'code') && code === ResultEnum.SUCCESS;

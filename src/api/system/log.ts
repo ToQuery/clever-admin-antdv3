@@ -1,7 +1,7 @@
 import { defHttp } from '/@/utils/http/axios';
 
-import { RequestParam, ResponseResult } from '/@/api/model/baseModel';
 import { LogListItem } from '/@/api/system/model/logModel';
+import { RequestParam, Result } from '/#/axios';
 
 enum Api {
   SystemLog = '/sys/log',
@@ -9,12 +9,12 @@ enum Api {
 
 //
 export const systemLogPage = (params?: RequestParam & LogListItem) =>
-  defHttp.get<ResponseResult<LogListItem[]>>({
+  defHttp.get<Result<LogListItem[]>>({
     url: Api.SystemLog,
     params,
   });
 
 export const systemLogDetail = (id: string) =>
-  defHttp.get<ResponseResult<LogListItem>>({
+  defHttp.get<Result<LogListItem>>({
     url: `${Api.SystemLog}/${id}`,
   });

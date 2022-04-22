@@ -27,16 +27,30 @@ export interface RequestOptions {
   retryRequest?: RetryRequest;
 }
 
+export interface RequestParam {
+  current: number; //    当前页号，从1开始
+  pageSize: number; //    分页大小
+}
+
 export interface RetryRequest {
   isOpenRetry: boolean;
   count: number;
   waitTime: number;
 }
+
 export interface Result<T = any> {
   code: number;
-  type: 'success' | 'error' | 'warning';
+  success: boolean;
   message: string;
-  result: T;
+  content: T;
+  page: PageParams;
+}
+
+export interface PageParams {
+  current: number; //    当前页号，从1开始
+  pageSize: number; //    分页大小
+  totalElements: number; //    元素数量
+  totalPages: number; //    页面数量
 }
 
 // multipart/form-data: upload file

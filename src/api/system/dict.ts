@@ -1,7 +1,7 @@
 import { defHttp } from '/@/utils/http/axios';
 
-import { RequestParam, ResponseResult } from '/@/api/model/baseModel';
 import { DictListItem } from '/@/api/system/model/dictModel';
+import { RequestParam, Result } from '/#/axios';
 
 enum Api {
   SystemDict = '/sys/dict',
@@ -9,34 +9,32 @@ enum Api {
 
 //
 export const systemDictPage = (params?: RequestParam & DictListItem) =>
-  defHttp.get<ResponseResult<DictListItem[]>>({
+  defHttp.get<Result<DictListItem[]>>({
     url: Api.SystemDict,
     params,
   });
 
 export const systemDictAdd = (systemDictBody: DictListItem) =>
-  defHttp.post<ResponseResult<DictListItem>>({
+  defHttp.post<Result<DictListItem>>({
     url: Api.SystemDict,
     data: systemDictBody,
   });
 
 export const systemDictDetail = (id: string) =>
-  defHttp.get<ResponseResult<DictListItem>>({
+  defHttp.get<Result<DictListItem>>({
     url: `${Api.SystemDict}/${id}`,
   });
 
 //
 export const systemDictUpdate = (systemDictBody: DictListItem) =>
-  defHttp.put<ResponseResult<DictListItem>>({
+  defHttp.put<Result<DictListItem>>({
     url: Api.SystemDict,
     data: systemDictBody,
   });
 
 //
 export const systemDictDelete = (ids: (string | undefined)[]) =>
-  defHttp.delete<ResponseResult<null>>({
+  defHttp.delete<Result<null>>({
     url: Api.SystemDict,
-    params: {
-      ids,
-    },
+    params: ids,
   });

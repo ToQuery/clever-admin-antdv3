@@ -1,6 +1,6 @@
 import { defHttp } from '/@/utils/http/axios';
-import { RequestParam, ResponseResult } from '/@/api/model/baseModel';
 import { RoleListItem } from '/@/api/system/model/roleModel';
+import { RequestParam, Result } from '/#/axios';
 
 enum Api {
   SystemRole = '/sys/role',
@@ -9,41 +9,39 @@ enum Api {
 
 //
 export const systemRolePage = (params?: RequestParam & RoleListItem) =>
-  defHttp.get<ResponseResult<RoleListItem[]>>({
+  defHttp.get<Result<RoleListItem[]>>({
     url: Api.SystemRole,
     params,
   });
 
 //
 export const systemRoleList = (params?: RoleListItem) =>
-  defHttp.get<ResponseResult<RoleListItem[]>>({
+  defHttp.get<Result<RoleListItem[]>>({
     url: Api.SystemRoleList,
     params,
   });
 
 export const systemRoleAdd = (systemRoleBody: RoleListItem) =>
-  defHttp.post<ResponseResult<RoleListItem>>({
+  defHttp.post<Result<RoleListItem>>({
     url: Api.SystemRole,
     data: systemRoleBody,
   });
 
 export const systemRoleDetail = (id: string) =>
-  defHttp.get<ResponseResult<RoleListItem>>({
+  defHttp.get<Result<RoleListItem>>({
     url: `${Api.SystemRole}/${id}`,
   });
 
 //
 export const systemRoleUpdate = (systemRoleBody: RoleListItem) =>
-  defHttp.put<ResponseResult<RoleListItem>>({
+  defHttp.put<Result<RoleListItem>>({
     url: Api.SystemRole,
     data: systemRoleBody,
   });
 
 //
 export const systemRoleDelete = (ids: (string | undefined)[]) =>
-  defHttp.delete<ResponseResult<null>>({
+  defHttp.delete<Result<null>>({
     url: Api.SystemRole,
-    params: {
-      ids,
-    },
+    params: ids,
   });

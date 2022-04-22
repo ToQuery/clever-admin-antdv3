@@ -1,7 +1,7 @@
 import { defHttp } from '/@/utils/http/axios';
 
-import { RequestParam, ResponseResult } from '/@/api/model/baseModel';
 import { WorkListItem } from '/@/api/system/model/workModel';
+import { RequestParam, Result } from '/#/axios';
 
 enum Api {
   SystemWork = '/sys/work',
@@ -9,34 +9,32 @@ enum Api {
 
 //
 export const systemWorkPage = (params?: RequestParam & WorkListItem) =>
-  defHttp.get<ResponseResult<WorkListItem[]>>({
+  defHttp.get<Result<WorkListItem[]>>({
     url: Api.SystemWork,
     params,
   });
 
 export const systemWorkAdd = (systemWorkBody: WorkListItem) =>
-  defHttp.post<ResponseResult<WorkListItem>>({
+  defHttp.post<Result<WorkListItem>>({
     url: Api.SystemWork,
     data: systemWorkBody,
   });
 
 export const systemWorkDetail = (id: string) =>
-  defHttp.get<ResponseResult<WorkListItem>>({
+  defHttp.get<Result<WorkListItem>>({
     url: `${Api.SystemWork}/${id}`,
   });
 
 //
 export const systemWorkUpdate = (systemWorkBody: WorkListItem) =>
-  defHttp.put<ResponseResult<WorkListItem>>({
+  defHttp.put<Result<WorkListItem>>({
     url: Api.SystemWork,
     data: systemWorkBody,
   });
 
 //
 export const systemWorkDelete = (ids: (string | undefined)[]) =>
-  defHttp.delete<ResponseResult<null>>({
+  defHttp.delete<Result<null>>({
     url: Api.SystemWork,
-    params: {
-      ids,
-    },
+    params: ids,
   });

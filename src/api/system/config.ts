@@ -1,7 +1,7 @@
 import { defHttp } from '/@/utils/http/axios';
 
-import { RequestParam, ResponseResult } from '/@/api/model/baseModel';
 import { ConfigListItem } from '/@/api/system/model/configModel';
+import { RequestParam, Result } from '/#/axios';
 
 enum Api {
   SystemConfig = '/sys/config',
@@ -9,34 +9,32 @@ enum Api {
 
 //
 export const systemConfigPage = (params?: RequestParam & ConfigListItem) =>
-  defHttp.get<ResponseResult<ConfigListItem[]>>({
+  defHttp.get<Result<ConfigListItem[]>>({
     url: Api.SystemConfig,
     params,
   });
 
 export const systemConfigAdd = (systemConfigBody: ConfigListItem) =>
-  defHttp.post<ResponseResult<ConfigListItem>>({
+  defHttp.post<Result<ConfigListItem>>({
     url: Api.SystemConfig,
     data: systemConfigBody,
   });
 
 export const systemConfigDetail = (id: string) =>
-  defHttp.get<ResponseResult<ConfigListItem>>({
+  defHttp.get<Result<ConfigListItem>>({
     url: `${Api.SystemConfig}/${id}`,
   });
 
 //
 export const systemConfigUpdate = (systemConfigBody: ConfigListItem) =>
-  defHttp.put<ResponseResult<ConfigListItem>>({
+  defHttp.put<Result<ConfigListItem>>({
     url: Api.SystemConfig,
     data: systemConfigBody,
   });
 
 //
 export const systemConfigDelete = (ids: (string | undefined)[]) =>
-  defHttp.delete<ResponseResult<null>>({
+  defHttp.delete<Result<null>>({
     url: Api.SystemConfig,
-    params: {
-      ids,
-    },
+    params: ids,
   });

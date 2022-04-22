@@ -1,6 +1,6 @@
 import { defHttp } from '/@/utils/http/axios';
-import { RequestParam, ResponseResult } from '/@/api/model/baseModel';
 import { MenuListItem } from '/@/api/system/model/menuModel';
+import { RequestParam, Result } from '/#/axios';
 
 enum Api {
   SystemMenu = '/sys/menu',
@@ -10,47 +10,44 @@ enum Api {
 
 //
 export const systemMenuPage = (params?: RequestParam & MenuListItem) =>
-  defHttp.get<ResponseResult<MenuListItem[]>>({
+  defHttp.get<Result<MenuListItem[]>>({
     url: Api.SystemMenu,
     params,
   });
 
 export const systemMenuList = (params?: MenuListItem) =>
-  defHttp.get<ResponseResult<MenuListItem[]>>({
+  defHttp.get<Result<MenuListItem[]>>({
     url: Api.SystemMenuList,
     params,
   });
 
 export const systemMenuTree = (params?: MenuListItem) =>
-  defHttp.get<ResponseResult<MenuListItem[]>>({
+  defHttp.get<Result<MenuListItem[]>>({
     url: Api.SystemMenuTree,
     params,
   });
 
-
 export const systemMenuAdd = (systemMenuBody: MenuListItem) =>
-  defHttp.post<ResponseResult<MenuListItem>>({
+  defHttp.post<Result<MenuListItem>>({
     url: Api.SystemMenu,
     data: systemMenuBody,
   });
 
 export const systemMenuDetail = (id: string) =>
-  defHttp.get<ResponseResult<MenuListItem>>({
+  defHttp.get<Result<MenuListItem>>({
     url: `${Api.SystemMenu}/${id}`,
   });
 
 //
 export const systemMenuUpdate = (systemMenuBody: MenuListItem) =>
-  defHttp.put<ResponseResult<MenuListItem>>({
+  defHttp.put<Result<MenuListItem>>({
     url: Api.SystemMenu,
     data: systemMenuBody,
   });
 
 //
 export const systemMenuDelete = (ids: (string | undefined)[]) =>
-  defHttp.delete<ResponseResult<null>>({
+  defHttp.delete<Result<null>>({
     url: Api.SystemMenu,
-    params: {
-      ids,
-    },
+    params: ids,
   });
