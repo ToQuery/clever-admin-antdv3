@@ -17,10 +17,7 @@ export function login(params: LoginRequest, mode: ErrorMessageMode = 'modal') {
   return defHttp.post<Result<LoginResponse>>(
     {
       url: Api.Login,
-      auth: {
-        username: params.username,
-        password: params.password,
-      },
+      data: params,
     },
     {
       errorMessageMode: mode,

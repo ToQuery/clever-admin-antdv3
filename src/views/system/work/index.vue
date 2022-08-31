@@ -43,10 +43,11 @@
   import { columns, searchFormSchema } from './work.data';
   import { useModal } from '/@/components/Modal';
   import { message } from 'ant-design-vue';
+  import { PageWrapper } from '/@/components/Page';
 
   export default defineComponent({
     name: 'SystemWork',
-    components: { BasicTable, DeptTree, WorkModal, TableAction },
+    components: { BasicTable, PageWrapper, DeptTree, WorkModal, TableAction },
     setup() {
       const [registerModal, { openModal }] = useModal();
       const searchInfo = reactive<Recordable>({});
