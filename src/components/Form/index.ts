@@ -13,5 +13,6 @@ export { default as ApiTree } from './src/components/ApiTree.vue';
 export { default as ApiRadioGroup } from './src/components/ApiRadioGroup.vue';
 export { default as ApiCascader } from './src/components/ApiCascader.vue';
 // export { default as ApiModalTableChecked } from './src/components/ApiModalTableChecked.vue';
+export { default as ApiTransfer } from './src/components/ApiTransfer.vue';
 
 export { BasicForm };
