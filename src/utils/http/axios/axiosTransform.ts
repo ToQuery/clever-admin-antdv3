@@ -5,6 +5,8 @@ import type { AxiosRequestConfig, AxiosResponse } from 'axios';
 import type { RequestOptions, Result } from '/#/axios';
 
 export interface CreateAxiosOptions extends AxiosRequestConfig {
+  // 请求不提交token
+  ignoreTokenUrl?: [];
   authenticationScheme?: string;
   transform?: AxiosTransform;
   requestOptions?: RequestOptions;

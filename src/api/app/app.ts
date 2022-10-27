@@ -4,10 +4,10 @@ import { LoginRequest, LoginResponse, UserInfo } from './model/appModel';
 import { ErrorMessageMode } from '/#/axios';
 import { Result } from '/#/axios';
 
-enum Api {
-  Login = '/user/login',
-  Logout = '/user/logout',
-  UserInfo = '/user/info',
+export enum Api {
+  Login = '/admin/login',
+  Logout = '/admin/logout',
+  UserInfo = '/admin/info',
 }
 
 /**

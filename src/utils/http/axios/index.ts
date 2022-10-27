@@ -143,6 +143,22 @@ const transform: AxiosTransform = {
    * @description: 请求拦截器处理
    */
   requestInterceptors: (config, options) => {
+    // 判断请求是否需要忽略token
+    const createAxiosOptions = config as CreateAxiosOptions;
+    const requestUrl = createAxiosOptions.url?.replace(
+      createAxiosOptions.requestOptions!.apiUrl as string,
+      '',
+    );
+    const ignoreTokenUrl = createAxiosOptions.ignoreTokenUrl;
+
+    if (
+      ignoreTokenUrl != null &&
+      ignoreTokenUrl.length > 0 &&
+      // @ts-ignore
+      ignoreTokenUrl.indexOf(requestUrl) >= 0
+    ) {
+      return config;
+    }
     // 请求之前处理config
     const token = getToken();
     if (token && (config as Recordable)?.requestOptions?.withToken !== false) {
@@ -259,6 +275,7 @@ function createAxios(opt?: Partial<CreateAxiosOptions>) {
             waitTime: 100,
           },
         },
+        ignoreTokenUrl: ['/admin/login'],
       },
       opt || {},
     ),
