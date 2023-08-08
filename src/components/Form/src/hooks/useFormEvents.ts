@@ -87,6 +87,13 @@ export function useFormEvents({
 
     Object.keys(formModel).forEach((key) => {
       const schema = unref(getSchema).find((item) => item.field === key);
+      const defaultValueObj = schema?.defaultValueObj;
+      const fieldKeys = Object.keys(defaultValueObj || {});
+      if (fieldKeys.length) {
+        fieldKeys.map((field) => {
+          formModel[field] = defaultValueObj![field];
+        });
+      }
       const isInput = schema?.component && defaultValueComponents.includes(schema.component);
       const defaultValue = cloneDeep(defaultValueRef.value[key]);
       formModel[key] = isInput ? defaultValue || '' : defaultValue;
@@ -96,14 +103,17 @@ export function useFormEvents({
     emit('reset', toRaw(formModel));
     submitOnReset && handleSubmit();
   }
-
+  // 获取表单fields
+  const getAllFields = () =>
+    unref(getSchema)
+      .map((item) => [...(item.fields || []), item.field])
+      .flat(1)
+      .filter(Boolean);
   /**
    * @description: Set form value
    */
   async function setFieldsValue(values: Recordable): Promise<void> {
-    const fields = unref(getSchema)
-      .map((item) => item.field)
-      .filter(Boolean);
+    const fields = getAllFields();
 
     // key 支持 a.b.c 的嵌套写法
     const delimiter = '.';
@@ -210,7 +220,13 @@ export function useFormEvents({
     first = false,
   ) {
     const schemaList: FormSchema[] = cloneDeep(unref(getSchema));
-
+    const addSchemaIds: string[] = Array.isArray(schema)
+      ? schema.map((item) => item.field)
+      : [schema.field];
+    if (schemaList.find((item) => addSchemaIds.includes(item.field))) {
+      error('There are schemas that have already been added');
+      return;
+    }
     const index = schemaList.findIndex((schema) => schema.field === prefixField);
     const _schemaList = isObject(schema) ? [schema as FormSchema] : (schema as FormSchema[]);
     if (!prefixField || index === -1 || first) {
@@ -334,8 +350,14 @@ export function useFormEvents({
     return unref(formElRef)?.validateFields(nameList);
   }
 
-  async function validate(nameList?: NamePath[] | undefined) {
-    return await unref(formElRef)?.validate(nameList);
+  async function validate(nameList?: NamePath[] | false | undefined) {
+    let _nameList: any;
+    if (nameList === undefined) {
+      _nameList = getAllFields();
+    } else {
+      _nameList = nameList === Array.isArray(nameList) ? nameList : undefined;
+    }
+    return await unref(formElRef)?.validate(_nameList);
   }
 
   async function clearValidate(name?: string | string[]) {
