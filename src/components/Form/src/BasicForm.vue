@@ -273,7 +273,7 @@
     }
   }
 
-  const formActionType: Partial<FormActionType> = {
+  const formActionType = {
     getFieldsValue,
     setFieldsValue,
     resetFields,
@@ -292,6 +292,10 @@
   const getFormActionBindProps = computed(
     () => ({ ...getProps.value, ...advanceState }) as InstanceType<typeof FormAction>['$props'],
   );
+
+  defineExpose({
+    ...formActionType,
+  });
 
   onMounted(() => {
     initDefault();
