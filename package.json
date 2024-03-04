@@ -97,7 +97,7 @@
     "resize-observer-polyfill": "^1.5.1",
     "showdown": "^2.1.0",
     "sortablejs": "^1.15.0",
-    "tinymce": "^5.10.7",
+    "tinymce": "^6.8.3",
     "unocss": "0.53.4",
     "vditor": "^3.9.4",
     "vue": "^3.3.4",
